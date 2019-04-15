@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 
 //get the data from the Api
 public interface DataServices {
-    @GET("api/Subcats/getsubcats/2/2.json?fbclid=IwAR3yWLXGHbY1WvwARaDip3TZiw49VdUisZMSSC1uwqaz0Ku8eve9PcsvFU8")
+    @GET("api/Subcats/getsubcats/2/2.json")
     Observable<MainData> getData();
 
     

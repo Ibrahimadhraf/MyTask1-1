@@ -40,11 +40,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
     //here we hold the view item with data from the a
     @Override
     public void onBindViewHolder(@NonNull productViewHolder holder, int position) {
-        String name=productList.get(0).getProduct().getName();
+        String name=productList.get(position).getProduct().getName();
         if(name!=null&&name.isEmpty()) {
-            holder.titleTextView.setText(name);
+            holder.nameTextView.setText(name);
         }else {
-            holder.titleTextView.setText(String.valueOf(0));
+            holder.nameTextView.setText(String.valueOf(0));
         }
         String price=productList.get(position).getPrice();
         if(price!=null&&price.isEmpty()) {
@@ -61,29 +61,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
             holder.amountTextView.setText(String.valueOf(0));
         }
 
-         String count=productList.get(position).orderdetailsList.get(0).getCount();
-        if(count != null &&count.isEmpty()) {
-            holder.countTextView.setText(String.valueOf(count));
-        }else {
-            holder.countTextView.setText(String.valueOf(0));
-        }
+
        String url_image=productList.get(position).getProduct().getPhoto_urlList().get(0).getImage_url();
        if(url_image !=null&&url_image.isEmpty()) {
            Uri uri = Uri.parse(url_image);
            Picasso.get().load(uri).into(holder.imageProduct);
        }
-        String star=productList.get(position).getProduct().getRating_totals().get(0).getStars();
-       if(star!=null&&star.isEmpty()) {
-           holder.ratingBar.setRating(Integer.parseInt(star));
-       }else {
-           holder.ratingBar.setRating(0);
-       }
-        String rating=productList.get(position).product.rating_totals.get(0).count;
-       if(star!=null&&star.isEmpty()) {
-           holder.titleTextView.setText(rating);
-       }else {
-           holder.titleTextView.setText(String.valueOf(0));
-       }
+
+
     }
 
     @Override
@@ -94,21 +79,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
     // the class that catch the item from the view
     class productViewHolder extends RecyclerView.ViewHolder {
         ImageView imageProduct;
+        Button buybutton;
         RatingBar ratingBar;
-        Button buyButton;
         FloatingActionButton like_button;
-        TextView amountTextView,textView,countTextView,priceTextView ,titleTextView;
+        TextView amountTextView,priceTextView ,nameTextView;
         private productViewHolder(@NonNull View itemView) {
             super(itemView);
-            titleTextView=itemView.findViewById(R.id.text_title);
+
+            nameTextView=itemView.findViewById(R.id.name);
             imageProduct=itemView.findViewById(R.id.image_product);
-            buyButton=itemView.findViewById(R.id.buy_button);
             ratingBar=itemView.findViewById(R.id.ratingBar);
-            like_button=itemView.findViewById(R.id.like_button);
-            amountTextView=itemView.findViewById(R.id.text_amout);
-            textView=itemView.findViewById(R.id.text_textView9);
-            countTextView=itemView.findViewById(R.id.textView_count);
-            priceTextView=itemView.findViewById(R.id.price);
+           // like_button=itemView.findViewById(R.id.like_button);
+            amountTextView=itemView.findViewById(R.id.textamount);
+            priceTextView=itemView.findViewById(R.id.textprice);
+
+
         }
     }
 }

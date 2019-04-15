@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
     //api Url
     private static final String TAG=RetrofitClient.class.getSimpleName();
-    private static final String BASE_URL ="http://shopgate.codesroots.com/ ";
+    private static final String BASE_URL =" http://shopgate.codesroots.com/";
     private static Retrofit retrofit = null;
     private static Retrofit getRetrofitInstance(Context context){
         //Retrofit Client

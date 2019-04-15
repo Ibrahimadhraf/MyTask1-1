@@ -37,11 +37,11 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.RecyclerViewHo
        //here we hold the view item with data from the api
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
-        String name=dataList.get(position).getName();
+        String name=dataList.get(0).getName();
         if(name!=null&&name.isEmpty()) {
             holder.mNameTextView.setText(name);
         }
-     String str=dataList.get(position).getPhotoUrl();
+     String str=dataList.get(0).getPhotoUrl();
      if(str !=null&&str.isEmpty()) {
          Uri uri = Uri.parse(str);
          Picasso.get().load(uri).into(holder.mDataImageView);
