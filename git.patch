@@ -1,0 +1,335 @@
+Index: app/src/main/java/com/example/android/mytask/DataViewModel.java
+===================================================================
+--- app/src/main/java/com/example/android/mytask/DataViewModel.java	(revision ec2f85e9dff8791d17a232a73d6b31abb4b6beb2)
++++ app/src/main/java/com/example/android/mytask/DataViewModel.java	(revision ec2f85e9dff8791d17a232a73d6b31abb4b6beb2)
+@@ -1,24 +0,0 @@
+-package com.example.android.mytask;
+-
+-import android.app.Application;
+-import android.content.Context;
+-
+-import com.example.android.mytask.Model.MainData;
+-import com.example.android.mytask.Network.RetrofitClient;
+-
+-import java.util.List;
+-
+-import androidx.annotation.NonNull;
+-import androidx.lifecycle.AndroidViewModel;
+-import io.reactivex.Observable;
+-
+-public class DataViewModel extends AndroidViewModel {
+-    public RetrofitClient clientt=new RetrofitClient();
+-    public DataViewModel(@NonNull Application application) {
+-        super(application);
+-
+-    }
+-    public Observable<List<MainData>> fetchData(Context context){
+-        return clientt.fetchData(context);
+-    }
+-}
+Index: app/src/main/java/com/example/android/mytask/Network/DataServices.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/android/mytask/Network/DataServices.java	(revision ec2f85e9dff8791d17a232a73d6b31abb4b6beb2)
++++ app/src/main/java/com/example/android/mytask/Network/DataServices.java	(date 1555291995973)
+@@ -6,9 +6,9 @@
+ import io.reactivex.Observable;
+ import retrofit2.http.GET;
+ 
+-
++//get the data from the Api
+ public interface DataServices {
+-    @GET("getsubcats/2/2.json?fbclid=IwAR3yWLXGHbY1WvwARaDip3TZiw49VdUisZMSSC1uwqaz0Ku8eve9PcsvFU8")
++    @GET("api/Subcats/getsubcats/2/2.json?fbclid=IwAR3yWLXGHbY1WvwARaDip3TZiw49VdUisZMSSC1uwqaz0Ku8eve9PcsvFU8")
+     Observable<List<MainData>> getData();
+ 
+     
+Index: app/src/main/java/com/example/android/mytask/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/android/mytask/MainActivity.java	(revision ec2f85e9dff8791d17a232a73d6b31abb4b6beb2)
++++ app/src/main/java/com/example/android/mytask/MainActivity.java	(date 1555275241647)
+@@ -11,10 +11,12 @@
+ import com.example.android.mytask.Fragments.HomeFragment;
+ import com.example.android.mytask.Fragments.NotificationFragment;
+ import com.example.android.mytask.Fragments.OffersFragment;
+-import com.example.android.mytask.Model.Data;
+ import com.example.android.mytask.Model.MainData;
++import com.example.android.mytask.ViewModel.DataViewModel;
+ import com.google.android.material.bottomnavigation.BottomNavigationView;
++
+ import java.util.List;
++
+ import androidx.annotation.NonNull;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.fragment.app.Fragment;
+@@ -24,11 +26,15 @@
+ import io.reactivex.android.schedulers.AndroidSchedulers;
+ import io.reactivex.disposables.CompositeDisposable;
+ import io.reactivex.functions.Consumer;
++import io.reactivex.schedulers.Schedulers;
+ 
+ 
+ public class MainActivity extends AppCompatActivity {
++    //view model
+     public DataViewModel viewModel;
++    //data recycler view
+     RecyclerView mDataRecyclerView;
++    //prouduct recyclerView
+     RecyclerView mProductRecyclerView;
+     CompositeDisposable disposable=new CompositeDisposable();
+     @Override
+@@ -46,36 +52,12 @@
+          viewModel= ViewModelProviders.of(this).get(DataViewModel.class);
+          fetchdata();
+     }
+-
+-    private void fetchdata() {
+-        disposable.add(
+-                viewModel.clientt.fetchData(MainActivity.this)
+-                .observeOn(AndroidSchedulers.mainThread())
+-                .subscribe(new Consumer<List<MainData>>() {
+-                    @Override
+-                    public void accept(List<MainData> mainData) throws Exception {
+-                        DataAdapter adapter=new DataAdapter();
+-                        mDataRecyclerView.setAdapter(adapter);
+-                        ProductAdapter madapter=new ProductAdapter();
+-                        mProductRecyclerView.setAdapter(madapter);
+-                    }
+-
+-                }));
+-
+-
+-
+-
+-
+-    }
+-
+-
+-
+-
++//add navigation button
+     private BottomNavigationView.OnNavigationItemSelectedListener listener =
+             new BottomNavigationView.OnNavigationItemSelectedListener() {
+                 @Override
+                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+-                                    Fragment selectFragment = null;
++                                    Fragment selectFragment=null;
+                                     switch (menuItem.getItemId()) {
+                                         case R.id.nav_home:
+                                             selectFragment = new HomeFragment();
+@@ -94,12 +76,35 @@
+                                             default:
+                                     }
+ 
+-                                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contaner,
++                    assert selectFragment != null;
++                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contaner,
+                                             selectFragment ).commit();
+                                     return true;
+                                 }
+                             };
+ 
++    private void fetchdata() {
++        disposable.add(
++                viewModel.client.fetchData(MainActivity.this)
++                        .subscribeOn(Schedulers.io())
++                .observeOn(AndroidSchedulers.mainThread())
++                .subscribe(new Consumer<List<MainData>>() {
++                    @Override
++                    public void accept(List<MainData> mainData)  {
++                        DataAdapter adapter=new DataAdapter();
++                        mDataRecyclerView.setAdapter(adapter);
++                        ProductAdapter madapter=new ProductAdapter();
++                        mProductRecyclerView.setAdapter(madapter);
++                    }
++
++                }));
++
++
++
++
++
++    }
++
+     @Override
+     public void addContentView(View view, ViewGroup.LayoutParams params) {
+         super.addContentView(view, params);
+Index: app/src/main/java/com/example/android/mytask/Adapter/ProductAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/android/mytask/Adapter/ProductAdapter.java	(revision ec2f85e9dff8791d17a232a73d6b31abb4b6beb2)
++++ app/src/main/java/com/example/android/mytask/Adapter/ProductAdapter.java	(date 1555275240913)
+@@ -1,6 +1,5 @@
+ package com.example.android.mytask.Adapter;
+ 
+-import android.content.Context;
+ import android.net.Uri;
+ import android.view.LayoutInflater;
+ import android.view.View;
+@@ -10,8 +9,6 @@
+ import android.widget.RatingBar;
+ import android.widget.TextView;
+ 
+-import com.example.android.mytask.Model.Photo_url;
+-import com.example.android.mytask.Model.Product;
+ import com.example.android.mytask.Model.ProductsRate;
+ import com.example.android.mytask.R;
+ import com.google.android.material.floatingactionbutton.FloatingActionButton;
+@@ -23,11 +20,9 @@
+ import androidx.recyclerview.widget.RecyclerView;
+ 
+ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productViewHolder> {
+-    public ProductAdapter() {
+-    }
+ 
+-    Context context;
+-    List<ProductsRate>productList;
++   private List<ProductsRate>productList;
++    //inflate data view
+     @NonNull
+     @Override
+     public productViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+@@ -35,7 +30,7 @@
+                 .inflate(R.layout.productview,parent,false);
+         return new productViewHolder(view);
+     }
+-
++    //here we hold the view item with data from the a
+     @Override
+     public void onBindViewHolder(@NonNull productViewHolder holder, int position) {
+         String name=productList.get(position).product.name;
+@@ -57,16 +52,17 @@
+ 
+     @Override
+     public int getItemCount() {
++        //to verify the item number
+         return productList.size();
+     }
+-
++    // the class that catch the item from the view
+     class productViewHolder extends RecyclerView.ViewHolder {
+         ImageView imageProduct;
+         RatingBar ratingBar;
+         Button buyButton;
+         FloatingActionButton like_button;
+         TextView amountTextView,textView,countTextView,priceTextView ,titleTextView;
+-        public productViewHolder(@NonNull View itemView) {
++        private productViewHolder(@NonNull View itemView) {
+             super(itemView);
+             titleTextView=itemView.findViewById(R.id.text_title);
+             imageProduct=itemView.findViewById(R.id.image_product);
+Index: app/src/main/java/com/example/android/mytask/Network/RetrofitClient.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/android/mytask/Network/RetrofitClient.java	(revision ec2f85e9dff8791d17a232a73d6b31abb4b6beb2)
++++ app/src/main/java/com/example/android/mytask/Network/RetrofitClient.java	(date 1555291995897)
+@@ -1,7 +1,6 @@
+ package com.example.android.mytask.Network;
+ 
+ import android.content.Context;
+-import android.util.Log;
+ 
+ import com.example.android.mytask.Model.MainData;
+ 
+@@ -13,10 +12,12 @@
+ import retrofit2.converter.gson.GsonConverterFactory;
+ 
+ public class RetrofitClient {
++    //api Url
+     private static final String TAG=RetrofitClient.class.getSimpleName();
+-    private static final String BASE_URL ="http://shopgate.codesroots.com/api/Subcats /";
++    private static final String BASE_URL ="http://shopgate.codesroots.com/ ";
+     private static Retrofit retrofit = null;
+-    public static Retrofit getRetrofitInstance(Context context){
++    private static Retrofit getRetrofitInstance(Context context){
++        //Retrofit Client
+         if(retrofit==null){
+           retrofit= new Retrofit.Builder()
+                     .baseUrl(BASE_URL)
+@@ -29,6 +30,7 @@
+     private static  DataServices getApiServices(Context context){
+         return getRetrofitInstance(context).create(DataServices.class);
+     }
++    //attach between data service and Retrofit Client
+     public Observable<List<MainData>> fetchData(Context context){
+         DataServices dataServices=RetrofitClient.getApiServices(context);
+         return dataServices.getData();
+Index: app/src/main/java/com/example/android/mytask/Adapter/DataAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/android/mytask/Adapter/DataAdapter.java	(revision ec2f85e9dff8791d17a232a73d6b31abb4b6beb2)
++++ app/src/main/java/com/example/android/mytask/Adapter/DataAdapter.java	(date 1555275241007)
+@@ -1,6 +1,5 @@
+ package com.example.android.mytask.Adapter;
+ 
+-import android.content.Context;
+ import android.net.Uri;
+ import android.view.LayoutInflater;
+ import android.view.View;
+@@ -9,7 +8,6 @@
+ import android.widget.TextView;
+ 
+ import com.example.android.mytask.Model.Data;
+-import com.example.android.mytask.Model.MainData;
+ import com.example.android.mytask.R;
+ import com.squareup.picasso.Picasso;
+ 
+@@ -19,14 +17,9 @@
+ import androidx.recyclerview.widget.RecyclerView;
+ 
+ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.RecyclerViewHolder>{
+-    public List<Data> dataList;
+-    public Context context;
++    private List<Data> dataList;
+ 
+-    public DataAdapter() {
+-        this.dataList = dataList;
+-        this.context = context;
+-    }
+-
++    //inflate data view
+     @NonNull
+     @Override
+     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+@@ -34,7 +27,7 @@
+                 .inflate(R.layout.data_view,parent,false);
+         return new  RecyclerViewHolder(view);
+     }
+-
++       //here we hold the view item with data from the api
+     @Override
+     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
+      holder.mNameTextView.setText(dataList.get(position).name);
+@@ -45,16 +38,17 @@
+ 
+     @Override
+     public int getItemCount() {
++        //to verify the item number
+         return dataList.size();
+     }
+-
++      // the class that catch the item from the view
+     class RecyclerViewHolder extends RecyclerView.ViewHolder {
+         TextView mNameTextView;
+         ImageView mDataImageView;
+-        public RecyclerViewHolder(@NonNull View itemView) {
++       private RecyclerViewHolder(@NonNull View itemView) {
+             super(itemView);
+-            mNameTextView=(TextView)itemView.findViewById(R.id.text_data);
+-            mDataImageView=(ImageView)itemView.findViewById(R.id.image_data);
++            mNameTextView=itemView.findViewById(R.id.text_data);
++            mDataImageView=itemView.findViewById(R.id.image_data);
+         }
+     }
+ }
