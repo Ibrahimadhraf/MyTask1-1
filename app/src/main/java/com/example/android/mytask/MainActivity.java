@@ -24,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(listener);
+        HomeFragment fragment=new HomeFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,
+                fragment ).commit();
 
     }
 //add navigation button

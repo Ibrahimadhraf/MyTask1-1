@@ -16,7 +16,7 @@ public class DataViewModel extends AndroidViewModel {
         super(application);
 
     }
-    Observable<MainData> fetchData(Context context){
+  public   Observable<MainData> fetchData(Context context){
         return client.fetchData(context);
     }
 }

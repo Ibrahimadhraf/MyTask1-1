@@ -54,7 +54,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
            holder.priceTextView.setText(String.valueOf(0));
         }
 
-        String amout=productList.get(0).getAmount();
+        String amout=productList.get(position).getAmount();
         if(amout!=null&&amout.isEmpty()) {
             holder.amountTextView.setText(amout);
         }else {

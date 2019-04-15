@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
     }
     private void fetchdata() {
         disposable.add(
-                viewModel.client.fetchData(getContext())
+                viewModel.fetchData(getContext())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Consumer<MainData>() {
