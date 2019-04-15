@@ -4,26 +4,22 @@ import com.google.gson.annotations.SerializedName;
 
 public class Rating_total {
     @SerializedName("stars")
-    public int stars;
+    public String stars;
     @SerializedName("count")
-  public   int count;
+  public   String count;
 
     public Rating_total() {
     }
 
-    public int getStars() {
+    public String getStars() {
         return stars;
     }
 
-    public void setStars(int stars) {
-        this.stars = stars;
-    }
 
-    public int getCount() {
+
+    public String getCount() {
         return count;
     }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
+
 }
