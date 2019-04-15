@@ -21,9 +21,9 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.RecyclerViewHo
     private List<Data> dataList;
     protected Context context;
 
-    public DataAdapter(List<Data> dataList, Context context) {
-        this.dataList = dataList;
-        this.context = context;
+    public DataAdapter(List<Data> mdataList, Context mcontext) {
+       this.context=mcontext;
+       this.dataList=mdataList;
     }
 
     //inflate data view
@@ -38,11 +38,11 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.RecyclerViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         String name=dataList.get(position).getName();
-        if(name!=null&&name.isEmpty()) {
+        if(name!=null&&!name.isEmpty()) {
             holder.mNameTextView.setText(name);
         }
      String str=dataList.get(position).getPhotoUrl();
-     if(str !=null&&str.isEmpty()) {
+     if(str !=null&&!str.isEmpty()) {
          Uri uri = Uri.parse(str);
          Picasso.get().load(uri).into(holder.mDataImageView);
      }

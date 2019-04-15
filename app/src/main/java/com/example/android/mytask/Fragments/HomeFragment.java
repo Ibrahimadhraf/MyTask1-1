@@ -55,18 +55,23 @@ public class HomeFragment extends Fragment {
                         .subscribe(new Consumer<MainData>() {
                             @Override
                             public void accept(MainData mainData)  {
-                                List<Data> data=mainData.getData();
-                                DataAdapter adapter=new DataAdapter(data,getContext());
-                                adapter.notifyDataSetChanged();
-                                mDataRecyclerView.setAdapter(adapter);
-                                List<ProductsRate> products=mainData.getProductsRates();
-                                ProductAdapter madapter=new ProductAdapter(getContext(),products);
-                                mProductRecyclerView.setAdapter(madapter);
-                                madapter.notifyDataSetChanged();
+                                impementData(mainData);
                             }
 
                         }));
 
+    }
+
+    private void impementData(MainData mainData) {
+        List<Data> data=mainData.getData();
+        DataAdapter adapter=new DataAdapter(data,getContext());
+        mDataRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        mDataRecyclerView.setAdapter(adapter);
+        List<ProductsRate> products=mainData.getProductsRates();
+        ProductAdapter madapter=new ProductAdapter(getContext(),products);
+        mProductRecyclerView.setAdapter(madapter);
+        madapter.notifyDataSetChanged();
     }
 
     @Override

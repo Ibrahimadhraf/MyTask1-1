@@ -21,11 +21,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productViewHolder> {
-    protected Context context;
+    protected Context mcontext;
    private List<ProductsRate>productList;
 
     public ProductAdapter(Context context, List<ProductsRate> productList) {
-        this.context = context;
+        this.mcontext = context;
         this.productList = productList;
     }
 
@@ -41,29 +41,29 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
     @Override
     public void onBindViewHolder(@NonNull productViewHolder holder, int position) {
         String name=productList.get(position).getProduct().getName();
-        if(name!=null&&name.isEmpty()) {
+        if(name!=null&&!name.isEmpty()) {
             holder.nameTextView.setText(name);
         }else {
-            holder.nameTextView.setText(String.valueOf(0));
+            holder.nameTextView.setText("name");
         }
         String price=productList.get(position).getPrice();
-        if(price!=null&&price.isEmpty()) {
+        if(price!=null&&!price.isEmpty()) {
             holder.priceTextView.setText(price);
         }
         else {
-           holder.priceTextView.setText(String.valueOf(0));
+           holder.priceTextView.setText("price");
         }
 
         String amout=productList.get(position).getAmount();
-        if(amout!=null&&amout.isEmpty()) {
+        if(amout!=null&&!amout.isEmpty()) {
             holder.amountTextView.setText(amout);
         }else {
-            holder.amountTextView.setText(String.valueOf(0));
+            holder.amountTextView.setText("amount");
         }
 
 
        String url_image=productList.get(position).getProduct().getPhoto_urlList().get(0).getImage_url();
-       if(url_image !=null&&url_image.isEmpty()) {
+       if(url_image !=null&&!url_image.isEmpty()) {
            Uri uri = Uri.parse(url_image);
            Picasso.get().load(uri).into(holder.imageProduct);
        }
@@ -89,7 +89,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
             nameTextView=itemView.findViewById(R.id.name);
             imageProduct=itemView.findViewById(R.id.image_product);
             ratingBar=itemView.findViewById(R.id.ratingBar);
-           // like_button=itemView.findViewById(R.id.like_button);
+        
             amountTextView=itemView.findViewById(R.id.textamount);
             priceTextView=itemView.findViewById(R.id.textprice);
 
