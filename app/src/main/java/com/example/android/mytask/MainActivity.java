@@ -11,10 +11,12 @@ import com.example.android.mytask.Fragments.BuyingFragment;
 import com.example.android.mytask.Fragments.HomeFragment;
 import com.example.android.mytask.Fragments.NotificationFragment;
 import com.example.android.mytask.Fragments.OffersFragment;
-import com.example.android.mytask.Model.Data;
 import com.example.android.mytask.Model.MainData;
+import com.example.android.mytask.ViewModel.DataViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -24,11 +26,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class MainActivity extends AppCompatActivity {
+    //view model
     public DataViewModel viewModel;
+    //data recycler view
     RecyclerView mDataRecyclerView;
+    //prouduct recyclerView
     RecyclerView mProductRecyclerView;
     CompositeDisposable disposable=new CompositeDisposable();
     @Override
@@ -46,36 +52,12 @@ public class MainActivity extends AppCompatActivity {
          viewModel= ViewModelProviders.of(this).get(DataViewModel.class);
          fetchdata();
     }
-
-    private void fetchdata() {
-        disposable.add(
-                viewModel.clientt.fetchData(MainActivity.this)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<MainData>>() {
-                    @Override
-                    public void accept(List<MainData> mainData) throws Exception {
-                        DataAdapter adapter=new DataAdapter();
-                        mDataRecyclerView.setAdapter(adapter);
-                        ProductAdapter madapter=new ProductAdapter();
-                        mProductRecyclerView.setAdapter(madapter);
-                    }
-
-                }));
-
-
-
-
-
-    }
-
-
-
-
+//add navigation button
     private BottomNavigationView.OnNavigationItemSelectedListener listener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                                    Fragment selectFragment = null;
+                                    Fragment selectFragment=null;
                                     switch (menuItem.getItemId()) {
                                         case R.id.nav_home:
                                             selectFragment = new HomeFragment();
@@ -94,11 +76,34 @@ public class MainActivity extends AppCompatActivity {
                                             default:
                                     }
 
-                                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contaner,
+                    assert selectFragment != null;
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contaner,
                                             selectFragment ).commit();
                                     return true;
                                 }
                             };
+
+    private void fetchdata() {
+        disposable.add(
+                viewModel.client.fetchData(MainActivity.this)
+                        .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<MainData>>() {
+                    @Override
+                    public void accept(List<MainData> mainData)  {
+                        DataAdapter adapter=new DataAdapter();
+                        mDataRecyclerView.setAdapter(adapter);
+                        ProductAdapter madapter=new ProductAdapter();
+                        mProductRecyclerView.setAdapter(madapter);
+                    }
+
+                }));
+
+
+
+
+
+    }
 
     @Override
     public void addContentView(View view, ViewGroup.LayoutParams params) {

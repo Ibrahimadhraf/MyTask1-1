@@ -1,6 +1,5 @@
 package com.example.android.mytask.Adapter;
 
-import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +9,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.android.mytask.Model.Photo_url;
-import com.example.android.mytask.Model.Product;
 import com.example.android.mytask.Model.ProductsRate;
 import com.example.android.mytask.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,11 +20,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productViewHolder> {
-    public ProductAdapter() {
-    }
 
-    Context context;
-    List<ProductsRate>productList;
+   private List<ProductsRate>productList;
+    //inflate data view
     @NonNull
     @Override
     public productViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,7 +30,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
                 .inflate(R.layout.productview,parent,false);
         return new productViewHolder(view);
     }
-
+    //here we hold the view item with data from the a
     @Override
     public void onBindViewHolder(@NonNull productViewHolder holder, int position) {
         String name=productList.get(position).product.name;
@@ -57,16 +52,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
 
     @Override
     public int getItemCount() {
+        //to verify the item number
         return productList.size();
     }
-
+    // the class that catch the item from the view
     class productViewHolder extends RecyclerView.ViewHolder {
         ImageView imageProduct;
         RatingBar ratingBar;
         Button buyButton;
         FloatingActionButton like_button;
         TextView amountTextView,textView,countTextView,priceTextView ,titleTextView;
-        public productViewHolder(@NonNull View itemView) {
+        private productViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView=itemView.findViewById(R.id.text_title);
             imageProduct=itemView.findViewById(R.id.image_product);

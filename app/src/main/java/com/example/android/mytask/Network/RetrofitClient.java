@@ -1,7 +1,6 @@
 package com.example.android.mytask.Network;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.android.mytask.Model.MainData;
 
@@ -13,10 +12,12 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
+    //api Url
     private static final String TAG=RetrofitClient.class.getSimpleName();
-    private static final String BASE_URL ="http://shopgate.codesroots.com/api/Subcats /";
+    private static final String BASE_URL ="http://shopgate.codesroots.com/ ";
     private static Retrofit retrofit = null;
-    public static Retrofit getRetrofitInstance(Context context){
+    private static Retrofit getRetrofitInstance(Context context){
+        //Retrofit Client
         if(retrofit==null){
           retrofit= new Retrofit.Builder()
                     .baseUrl(BASE_URL)
@@ -29,6 +30,7 @@ public class RetrofitClient {
     private static  DataServices getApiServices(Context context){
         return getRetrofitInstance(context).create(DataServices.class);
     }
+    //attach between data service and Retrofit Client
     public Observable<List<MainData>> fetchData(Context context){
         DataServices dataServices=RetrofitClient.getApiServices(context);
         return dataServices.getData();
