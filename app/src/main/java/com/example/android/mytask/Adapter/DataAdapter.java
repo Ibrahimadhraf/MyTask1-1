@@ -1,5 +1,6 @@
 package com.example.android.mytask.Adapter;
 
+import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.RecyclerViewHolder>{
     private List<Data> dataList;
+    private Context context;
+
+    public DataAdapter(List<Data> dataList, Context context) {
+        this.dataList = dataList;
+        this.context = context;
+    }
 
     //inflate data view
     @NonNull
@@ -30,10 +37,15 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.RecyclerViewHo
        //here we hold the view item with data from the api
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
-     holder.mNameTextView.setText(dataList.get(position).name);
-     String str=dataList.get(position).photoUrl;
-        Uri uri =Uri.parse(str);
-        Picasso.get().load(uri).into(holder.mDataImageView);
+        String name=dataList.get(position).getName();
+        if(name!=null&&name.isEmpty()) {
+            holder.mNameTextView.setText(name);
+        }
+     String str=dataList.get(position).getPhotoUrl();
+     if(str !=null&&str.isEmpty()) {
+         Uri uri = Uri.parse(str);
+         Picasso.get().load(uri).into(holder.mDataImageView);
+     }
     }
 
     @Override

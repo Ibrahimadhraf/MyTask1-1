@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.example.android.mytask.Model.MainData;
 
-import java.util.List;
-
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -31,7 +29,7 @@ public class RetrofitClient {
         return getRetrofitInstance(context).create(DataServices.class);
     }
     //attach between data service and Retrofit Client
-    public Observable<List<MainData>> fetchData(Context context){
+    public Observable<MainData> fetchData(Context context){
         DataServices dataServices=RetrofitClient.getApiServices(context);
         return dataServices.getData();
     }

@@ -11,7 +11,9 @@ import com.example.android.mytask.Fragments.BuyingFragment;
 import com.example.android.mytask.Fragments.HomeFragment;
 import com.example.android.mytask.Fragments.NotificationFragment;
 import com.example.android.mytask.Fragments.OffersFragment;
+import com.example.android.mytask.Model.Data;
 import com.example.android.mytask.Model.MainData;
+import com.example.android.mytask.Model.ProductsRate;
 import com.example.android.mytask.ViewModel.DataViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -88,13 +90,17 @@ public class MainActivity extends AppCompatActivity {
                 viewModel.client.fetchData(MainActivity.this)
                         .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<MainData>>() {
+                .subscribe(new Consumer<MainData>() {
                     @Override
-                    public void accept(List<MainData> mainData)  {
-                        DataAdapter adapter=new DataAdapter();
+                    public void accept(MainData mainData)  {
+                       List<Data> data=mainData.getData();
+                        DataAdapter adapter=new DataAdapter(data,MainActivity.this);
+                        adapter.notifyDataSetChanged();
                         mDataRecyclerView.setAdapter(adapter);
-                        ProductAdapter madapter=new ProductAdapter();
+                        List<ProductsRate> products=mainData.getProductsRates();
+                        ProductAdapter madapter=new ProductAdapter(MainActivity.this,products);
                         mProductRecyclerView.setAdapter(madapter);
+                        madapter.notifyDataSetChanged();
                     }
 
                 }));

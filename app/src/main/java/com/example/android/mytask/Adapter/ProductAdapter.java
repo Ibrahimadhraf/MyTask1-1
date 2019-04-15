@@ -1,5 +1,6 @@
 package com.example.android.mytask.Adapter;
 
+import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +21,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productViewHolder> {
-
+   private Context context;
    private List<ProductsRate>productList;
+
+    public ProductAdapter(Context context, List<ProductsRate> productList) {
+        this.context = context;
+        this.productList = productList;
+    }
+
     //inflate data view
     @NonNull
     @Override
@@ -33,17 +40,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
     //here we hold the view item with data from the a
     @Override
     public void onBindViewHolder(@NonNull productViewHolder holder, int position) {
-        String name=productList.get(position).product.name;
-        holder.titleTextView.setText(name);
-        String price=productList.get(position).price;
-        holder.priceTextView.setText(price);
-        String amout=productList.get(position).amount;
-        holder.amountTextView.setText(amout);
-         int count=productList.get(position).orderdetailsList.get(position).count;
+        String name=productList.get(position).getProduct().getName();
+        if(name!=null&&name.isEmpty()) {
+            holder.titleTextView.setText(name);
+        }
+        String price=productList.get(position).getPrice();
+        if(price!=null&&price.isEmpty()) {
+            holder.priceTextView.setText(price);
+        }
+
+        String amout=productList.get(position).getAmount();
+        if(amout!=null&&amout.isEmpty()) {
+            holder.amountTextView.setText(amout);
+        }
+         int count=productList.get(position).orderdetailsList.get(position).getCount();
          holder.countTextView.setText(String.valueOf(count));
-       String url_image=productList.get(position).product.photo_urlList.get(position).image_url;
-        Uri uri=Uri.parse(url_image);
-        Picasso.get().load(uri).into(holder.imageProduct);
+       String url_image=productList.get(position).getProduct().getPhoto_urlList().get(position).getImage_url();
+       if(url_image !=null&&url_image.isEmpty()) {
+           Uri uri = Uri.parse(url_image);
+           Picasso.get().load(uri).into(holder.imageProduct);
+       }
         int star=productList.get(position).product.rating_totals.get(position).stars;
         holder.ratingBar.setNumStars(star);
         int rating=productList.get(position).product.rating_totals.get(position).count;

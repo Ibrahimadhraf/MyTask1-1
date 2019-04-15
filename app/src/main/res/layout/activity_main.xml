@@ -9,8 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/textView"
@@ -59,29 +58,26 @@
         <TextView
             android:id="@+id/textView3"
             android:layout_width="0dp"
-            android:layout_height="26dp"
+            android:layout_height="44dp"
             android:layout_marginStart="29dp"
             android:layout_marginLeft="29dp"
             android:layout_marginEnd="29dp"
             android:layout_marginRight="29dp"
-            android:layout_marginBottom="23dp"
             android:text="@string/second_title"
-            app:layout_constraintBottom_toTopOf="@+id/recyclerView2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView" />
+            tools:layout_editor_absoluteY="268dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView2"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="130dp"
             android:layout_marginStart="13dp"
             android:layout_marginLeft="13dp"
+            android:layout_marginTop="160dp"
             android:layout_marginEnd="6dp"
             android:layout_marginRight="6dp"
-            android:layout_marginBottom="23dp"
-            app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="@+id/textView3"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,10 +90,10 @@
             android:layout_above="@id/navigation"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
@@ -111,4 +107,5 @@
             app:layout_constraintTop_toBottomOf="@+id/recyclerView2"
             app:menu="@menu/navbar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
