@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
 
                     assert selectFragment != null;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contaner,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,
                                             selectFragment ).commit();
                                     return true;
                                 }
