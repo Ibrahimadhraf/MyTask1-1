@@ -55,14 +55,14 @@ public class HomeFragment extends Fragment {
                         .subscribe(new Consumer<MainData>() {
                             @Override
                             public void accept(MainData mainData)  {
-                                impementData(mainData);
+                                implementData(mainData);
                             }
 
                         }));
 
     }
 
-    private void impementData(MainData mainData) {
+    private void implementData(MainData mainData) {
         List<Data> data=mainData.getData();
         DataAdapter adapter=new DataAdapter(data,getContext());
         mDataRecyclerView.setAdapter(adapter);
