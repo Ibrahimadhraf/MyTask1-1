@@ -1,6 +1,8 @@
 package com.example.android.mytask;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,16 +61,15 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             };
 
-
-
-
-
-
-
-
     @Override
     public void addContentView(View view, ViewGroup.LayoutParams params) {
         super.addContentView(view, params);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.shop_menu, menu);
+        return true;
     }
 
 }
