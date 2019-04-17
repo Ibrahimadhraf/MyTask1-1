@@ -6,11 +6,13 @@
     <string name="by_oferrs">عروض</string>
     <string name="by_notification">إشعارات</string>
     <string name="by_more">المزيد</string>
-    <!--MianACtivity titles-->
+    <!--HomeFragment titles-->
     <string name="main_title">العنايه بالشعر</string>
     <string name="second_title">الأكثر مبيعاً للعنايه بالشعر</string>
     <string name="search_hint">البحث عن المنتجات </string>
     <string name="product_title">المنتجات الأكثر تداولا </string>
     <string name="buy_button">أضف إلى  العربه</string>
     <string name="buy_menu">شراس</string>
+    <string name="salary">ريال</string>
+    <string name="amount">الكميه المتاحه</string>
 </resources>
