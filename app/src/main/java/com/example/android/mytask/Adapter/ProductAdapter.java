@@ -67,10 +67,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
            Picasso.get().load(uri).into(holder.imageProduct);
        }
 
-         int stars=productList.get(0).getProduct().getRating_totals().get(0).getStars();
-         holder.ratingBar.setNumStars(stars);
-         int rate=productList.get(0).getProduct().getRating_totals().get(0).getCount();
-         holder.ratingBar.setRating(Float.intBitsToFloat(rate));
+
     }
 
     @Override
