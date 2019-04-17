@@ -5,40 +5,35 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Product {
-    @SerializedName( "name_en")
-   public String name;
-    @SerializedName("total_rating")
-    public List<Rating_total> rating_totals;
+ @SerializedName("name_en")
+ private String name;
+
     @SerializedName("productphotos")
-    public List<Photo_url>photo_urlList;
+    private List<Photo_url>photo_urlList;
+ @SerializedName("total_rating")
+ private List<Rating_total> rating_totals;
     int id;
     @SerializedName("name")
-    public String name2;
-    int cat_id;
-    int subcat_id;
-    String color_hex;
-    String created;
-    String modified;
-    String description;
-    String description_en;
-    String  red;
-    String green;
-    String blue;
-
+    private String name2;
+ private int cat_id;
+    private int subcat_id;
+    private String color_hex;
+    private String created;
+    private String modified;
+    private String description;
+    private String description_en;
+    private String  red;
+    private String green;
+    private String blue;
+ public List<Rating_total> getRating_totals() {
+  return rating_totals;
+ }
  public String getName() {
   return name;
  }
 
  public void setName(String name) {
   this.name = name;
- }
-
- public List<Rating_total> getRating_totals() {
-  return rating_totals;
- }
-
- public void setRating_totals(List<Rating_total> rating_totals) {
-  this.rating_totals = rating_totals;
  }
 
  public List<Photo_url> getPhoto_urlList() {

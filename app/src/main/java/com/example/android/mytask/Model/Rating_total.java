@@ -12,7 +12,10 @@ public class Rating_total {
     }
 
     public int getStars() {
-        return stars;
+        String.valueOf(stars);
+        if(!String.valueOf(stars).isEmpty()) {
+            return stars;
+        }else return 2;
     }
 
 

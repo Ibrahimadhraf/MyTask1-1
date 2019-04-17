@@ -13,6 +13,9 @@ public class ProductsRate {
  @SerializedName("product")
  public Product product;
 
+
+
+
  public ProductsRate() {
 
  }

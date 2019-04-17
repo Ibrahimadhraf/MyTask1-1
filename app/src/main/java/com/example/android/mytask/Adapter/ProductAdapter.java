@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -68,7 +67,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
            Picasso.get().load(uri).into(holder.imageProduct);
        }
 
-
+         int stars=productList.get(0).getProduct().getRating_totals().get(0).getStars();
+         holder.ratingBar.setNumStars(stars);
+         int rate=productList.get(0).getProduct().getRating_totals().get(0).getCount();
+         holder.ratingBar.setRating(Float.intBitsToFloat(rate));
     }
 
     @Override
@@ -79,7 +81,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
     // the class that catch the item from the view
     class productViewHolder extends RecyclerView.ViewHolder {
         ImageView imageProduct;
-        Button buybutton;
         RatingBar ratingBar;
         FloatingActionButton like_button;
         TextView amountTextView,priceTextView ,nameTextView;
